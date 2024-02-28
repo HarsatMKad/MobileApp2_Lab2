@@ -18,15 +18,24 @@ import com.squareup.picasso.Picasso
 class CharacterAdapter(private val context: Context, private val list: Array<Results>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class ImageViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val image = view.findViewById<ImageView>(R.id.imageView)
+        private val image = view.findViewById<ImageView>(R.id.imageView)
+        fun bind(character: Results) {
+            Picasso.get().load(character.image).into(image)
+        }
     }
 
     class NameViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val Name = view.findViewById<TextView>(R.id.name_text)
+        private val name = view.findViewById<TextView>(R.id.name_text)
+        fun bind(character: Results) {
+            name.text = character.name
+        }
     }
 
     class SpeciesViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val Species = view.findViewById<TextView>(R.id.species_text)
+        private val species = view.findViewById<TextView>(R.id.species_text)
+        fun bind(character: Results) {
+            species.text = character.species
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -54,15 +63,14 @@ class CharacterAdapter(private val context: Context, private val list: Array<Res
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = list[position]
 
-        if(holder.itemViewType == IMAGE_TYPE){
-            val url = data.image
-            Picasso.get().load(url).into((holder as ImageViewHolder).image)
+        if(holder.itemViewType == IMAGE_TYPE) {
+            (holder as ImageViewHolder).bind(data)
         }
-        if(holder.itemViewType == NAME_TYPE){
-            (holder as NameViewHolder).Name.text = data.name
+        if(holder.itemViewType == NAME_TYPE) {
+            (holder as NameViewHolder).bind(data)
         }
-        if(holder.itemViewType == SPECIES_TYPE){
-            (holder as SpeciesViewHolder).Species.text = data.species
+        if(holder.itemViewType == SPECIES_TYPE) {
+            (holder as SpeciesViewHolder).bind(data)
         }
     }
 }
