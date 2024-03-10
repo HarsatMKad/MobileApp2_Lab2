@@ -21,10 +21,7 @@ class CharacterViewModel() : ViewModel() {
     var page = 19
 
     suspend fun parsData(){
-        CoroutineScope(Dispatchers.IO).launch {
-            val characters = RickAndMortyApiClient().getApiProduct().getCharacters(page)
-            CharacterData.postValue(characters)
-        }
+        CharacterData.postValue(RickAndMortyApiClient().getApiProduct(page))
     }
 
     fun upPage(): Boolean{
