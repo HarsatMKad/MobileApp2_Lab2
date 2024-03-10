@@ -57,7 +57,7 @@ data class Results(
 }
 
 interface RickAndMortyApiService{
-    @GET("/api/character/?")
+    @GET(RickAndMortyApp.endURL)
     suspend fun getCharacters(
         @Query("page") page: Int
     ) : CharacterAPI

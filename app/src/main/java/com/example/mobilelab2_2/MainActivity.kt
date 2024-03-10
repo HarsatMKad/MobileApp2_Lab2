@@ -17,7 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -33,17 +36,25 @@ class MainActivity : AppCompatActivity() {
         val PageText: TextView = findViewById(R.id.pageText)
 
         val CharacterModel = ViewModelProvider(this).get(CharacterViewModel::class.java)
-        CharacterModel.parsData()
+
+        runBlocking {
+            CharacterModel.parsData()
+        }
+
+        val adapter = CharacterAdapter(this@MainActivity)
 
         CharacterModel.CharacterData.observe(this, Observer<CharacterAPI> {
             value: CharacterAPI ->
             PageText.text = CharacterModel.page.toString()
-            recyclerView.adapter = CharacterAdapter(this@MainActivity, value.results)
+            adapter.submitList(value.results)
+            recyclerView.adapter = adapter
         })
 
         nextButton.setOnClickListener{
             if(CharacterModel.upPage()){
-                CharacterModel.parsData()
+                runBlocking {
+                    CharacterModel.parsData()
+                }
             } else {
                 Toast.makeText(this, "End of list", Toast.LENGTH_SHORT).show()
             }
@@ -51,7 +62,9 @@ class MainActivity : AppCompatActivity() {
 
         backButton.setOnClickListener{
             if(CharacterModel.downPage()){
-                CharacterModel.parsData()
+                runBlocking {
+                    CharacterModel.parsData()
+                }
             } else {
                 Toast.makeText(this, "End of list", Toast.LENGTH_SHORT).show()
             }

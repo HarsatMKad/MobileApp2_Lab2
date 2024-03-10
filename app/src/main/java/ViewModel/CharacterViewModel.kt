@@ -2,6 +2,8 @@ package ViewModel
 
 import Data.CharacterAPI
 import Data.RickAndMortyApiService
+import Data.RickAndMortyApp
+import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -14,17 +16,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CharacterViewModel() : ViewModel() {
+    var application = Application()
     var CharacterData: MutableLiveData<CharacterAPI> = MutableLiveData()
     var page = 19
 
-    fun parsData(){
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://rickandmortyapi.com")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-
-        val productAPI = retrofit.create(RickAndMortyApiService::class.java)
+    suspend fun parsData(){
         CoroutineScope(Dispatchers.IO).launch {
-            val characters = productAPI.getCharacters(page)
+            val characters = RickAndMortyApiClient().getApiProduct().getCharacters(page)
             CharacterData.postValue(characters)
         }
     }

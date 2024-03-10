@@ -15,8 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilelab2_2.R
 import com.squareup.picasso.Picasso
 
-class CharacterAdapter(private val context: Context, private val list: Array<Results>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CharacterAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var list: Array<Results>
 
+    fun submitList(data: Array<Results>){
+        list = data
+    }
     class ImageViewHolder(view: View): RecyclerView.ViewHolder(view){
         private val image = view.findViewById<ImageView>(R.id.imageView)
         fun bind(character: Results) {
