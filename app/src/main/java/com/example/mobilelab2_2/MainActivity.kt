@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -37,9 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         val CharacterModel = ViewModelProvider(this).get(CharacterViewModel::class.java)
 
-        runBlocking {
-            CharacterModel.parsData()
-        }
+        CharacterModel.parsData()
 
         val adapter = CharacterAdapter(this@MainActivity)
 
@@ -52,9 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         nextButton.setOnClickListener{
             if(CharacterModel.upPage()){
-                runBlocking {
-                    CharacterModel.parsData()
-                }
+                CharacterModel.parsData()
             } else {
                 Toast.makeText(this, "End of list", Toast.LENGTH_SHORT).show()
             }
@@ -62,9 +59,7 @@ class MainActivity : AppCompatActivity() {
 
         backButton.setOnClickListener{
             if(CharacterModel.downPage()){
-                runBlocking {
-                    CharacterModel.parsData()
-                }
+                CharacterModel.parsData()
             } else {
                 Toast.makeText(this, "End of list", Toast.LENGTH_SHORT).show()
             }

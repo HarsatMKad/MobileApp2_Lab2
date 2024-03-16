@@ -19,11 +19,7 @@ class RickAndMortyApiClient {
 
         val productAPI = retrofit.create(RickAndMortyApiService::class.java)
 
-        val corut = CoroutineScope(Dispatchers.IO).async {
-            val characters = productAPI.getCharacters(page)
-            return@async characters
-        }
-
-        return corut.await()
+        val characters = productAPI.getCharacters(page)
+        return characters
     }
 }
